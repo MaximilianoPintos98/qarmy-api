@@ -1,7 +1,8 @@
 const CertificateService = require("../services/certificate.service");
+
 const service = new CertificateService();
 
-const create = async (req, res) => {
+const createCertificate = async (req, res) => {
   try {
     const response = await service.create(req.body);
     res.json({ success: true, data: response });
@@ -10,26 +11,28 @@ const create = async (req, res) => {
   }
 };
 
-const get = async (req, res) => {
+const getAllCertificates = async (req, res) => {
+  const { page = 1, pageSize = 10, first_name, last_name, license, course, note, date } = req.query;
+
   try {
-    const response = await service.find();
-    res.json(response);
+    const certificates = await service.getAllCertificates(page, pageSize, { first_name, last_name, license, course, note, date });
+    res.json(certificates);
   } catch (error) {
-    res.status(500).send({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-const getById = async (req, res) => {
+const getCertificateById = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await service.findOne(id);
-    res.json(response);
+
+    res.json(await service.findOne(id));
   } catch (error) {
     res.status(500).send({ success: false, message: error.message });
   }
 };
 
-const update = async (req, res) => {
+const updateCertificate = async (req, res) => {
   try {
     const { id } = req.params;
     const body = req.body;
@@ -40,7 +43,7 @@ const update = async (req, res) => {
   }
 };
 
-const _delete = async (req, res) => {
+const deleteCertificate = async (req, res) => {
   try {
     const { id } = req.params;
     const response = await service.delete(id);
@@ -51,9 +54,9 @@ const _delete = async (req, res) => {
 };
 
 module.exports = {
-  create,
-  get,
-  getById,
-  update,
-  _delete,
+  createCertificate,
+  getAllCertificates,
+  getCertificateById,
+  updateCertificate,
+  deleteCertificate,
 };

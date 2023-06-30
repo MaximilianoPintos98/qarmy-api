@@ -3,10 +3,10 @@ const router = express.Router();
 const certificateService = require("../controllers/certificate.controller");
 
 router
-  .get("/", certificateService.get)
-  .get("/:id", certificateService.getById)
-  .post("/", certificateService.create)
-  .put("/:id", certificateService.update)
-  .delete("/:id", certificateService._delete);
+  .get("/", certificateService.getAllCertificates)
+  .get("/:id", certificateService.getCertificateById)
+  .post("/", certificateService.createCertificate)
+  .put("/:id", certificateService.updateCertificate)
+  .delete("/:id", certificateService.deleteCertificate);
 
 module.exports = router;
