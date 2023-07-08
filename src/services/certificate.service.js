@@ -34,16 +34,18 @@ class CertificateService {
     };
   }
 
-  async findOne(id) {
-    const res = await models.Certificate.findByPk(id);
-
-    return res;
+  async getCertificateByField(license) {
+    const certificate = await models.Certificate.findOne({
+      where: {
+        license: { [Op.like]: `%${license}%` },
+      },
+    });
+  
+    return certificate;
   }
 
   async create(data) {
-    const res = await models.Certificate.create(data);
-
-    return res;
+    return await models.Certificate.create(data);
   }
 
   async update(id, data) {

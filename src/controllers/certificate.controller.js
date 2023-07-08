@@ -22,13 +22,19 @@ const getAllCertificates = async (req, res) => {
   }
 };
 
-const getCertificateById = async (req, res) => {
+const getCertificateByLicense = async (req, res) => {
+  const { license } = req.body;
+  
   try {
-    const { id } = req.params;
+    const certificate = await service.getCertificateByField(license);
 
-    res.json(await service.findOne(id));
+    if (!certificate) {
+      return res.status(404).json({ error: 'Certificate not found' });
+    }
+
+    return res.json(certificate);
   } catch (error) {
-    res.status(500).send({ success: false, message: error.message });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -56,7 +62,7 @@ const deleteCertificate = async (req, res) => {
 module.exports = {
   createCertificate,
   getAllCertificates,
-  getCertificateById,
+  getCertificateByLicense,
   updateCertificate,
   deleteCertificate,
 };
