@@ -40,7 +40,7 @@ class CertificateService {
         license: { [Op.like]: `%${license}%` },
       },
     });
-  
+
     return certificate;
   }
 
