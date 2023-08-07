@@ -44,9 +44,13 @@ const CertificateSchema = {
     type: DataTypes.STRING(250),
   },
   note: {
-    allowNUll: false,
+    allowNull: false,
     type: DataTypes.STRING(250),
   },
+  description: {
+    allowNull: false,
+    type: DataTypes.STRING(500),
+  }
 };
 
 module.exports = { Certificate, CertificateSchema };

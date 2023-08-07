@@ -9,7 +9,7 @@ class CertificateService {
     const offset = (page - 1) * pageSize;
     const whereClause = {};
 
-    const { first_name, last_name, license, course, note, date } = filters;
+    const { first_name, last_name, license, course, note, date, description } = filters;
 
     if (first_name) whereClause.first_name = { [Op.like]: `%${first_name}%` };
     if (last_name) whereClause.last_name = { [Op.like]: `%${last_name}%` };
@@ -17,6 +17,7 @@ class CertificateService {
     if (course) whereClause.course = { [Op.like]: `%${course}%` };
     if (note) whereClause.note = { [Op.like]: `%${note}%` };
     if (date) whereClause.date = { [Op.like]: `%${date}%` };
+    if (description) whereClause.description = { [Op.like]: `%${description}%` };
 
     const { count, rows } = await models.Certificate.findAndCountAll({
       where: whereClause,
@@ -49,14 +50,23 @@ class CertificateService {
   }
 
   async update(id, data) {
-    const model = await this.findOne(id);
-    const res = await model.update(data);
-
-    return res;
+    try {
+      const model = await models.Certificate.findOne({ where: { id } });
+  
+      if (!model) {
+        throw new Error('Certificate not found');
+      }
+  
+      const updatedModel = await model.update(data);
+  
+      return updatedModel;
+    } catch (error) {
+      throw new Error(`Error updating certificate: ${error.message}`);
+    }
   }
 
   async delete(id) {
-    const model = await this.findOne(id);
+    const model = await models.Certificate.findOne(id);
     await model.destroy();
 
     return { deleted: true };

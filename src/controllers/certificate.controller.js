@@ -12,10 +12,10 @@ const createCertificate = async (req, res) => {
 };
 
 const getAllCertificates = async (req, res) => {
-  const { page = 1, pageSize = 10, first_name, last_name, license, course, note, date } = req.query;
+  const { page = 1, pageSize = 10, first_name, last_name, license, course, note, date, description } = req.query;
 
   try {
-    const certificates = await service.getAllCertificates(page, pageSize, { first_name, last_name, license, course, note, date });
+    const certificates = await service.getAllCertificates(page, pageSize, { first_name, last_name, license, course, note, date, description });
     res.json(certificates);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
